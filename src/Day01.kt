@@ -1,17 +1,21 @@
 fun main() {
-    fun part1(input: List<String>): Int {
-        return input.size
-    }
+    fun part1(input: List<String>): Int = input
+        .map(String::toInt)
+        .zipWithNext { a, b -> if (a < b) 1 else 0 }
+        .sum()
 
     fun part2(input: List<String>): Int {
-        return input.size
+        val depths = input.map(String::toInt)
+
+        return depths
+            .mapIndexed { index, depth -> if (index < 2) -1 else depths[index - 2] + depths[index - 1] + depth }
+            .drop(2)
+            .zipWithNext { a, b -> if (a < b) 1 else 0 }
+            .sum()
     }
 
-    // test if implementation meets criteria from the description, like:
-    val testInput = readInput("Day01_test")
-    check(part1(testInput) == 1)
-
     val input = readInput("Day01")
+
     println(part1(input))
     println(part2(input))
 }
